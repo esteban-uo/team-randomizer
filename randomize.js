@@ -1,7 +1,11 @@
 const time = moment();
 
+const ALONE = '-';
+const SPRINT_DURATION = 15;
+const PAIR_SIZE = 2;
+
 $('#startsAt').val(time.format('YYYY-MM-DD'));
-$('#endsAt').val(time.add(15, 'days').format('YYYY-MM-DD'));
+$('#endsAt').val(time.add(SPRINT_DURATION, 'days').format('YYYY-MM-DD'));
 
 $('#submit').click(onSubmit);
 
@@ -12,7 +16,7 @@ function getPairs(remainingElements) {
   while(newRemaining.length > 0) {
     const team = [];
 
-    for(var i = 0; i < 2 && newRemaining.length; ++i) {
+    for(var i = 0; i < PAIR_SIZE && newRemaining.length; ++i) {
       team.push(newRemaining.pop());
     }
 
@@ -27,14 +31,14 @@ function onSubmit() {
 
   const names = getNames();
   const endsAt = moment($('#endsAt').val());
+  const rotationTime = $('#rotationTime').val();
   let currentDate = moment($('#startsAt').val());
 
   $distribution.empty();
 
   do {
-    const shuffleElements = _.shuffle([ ...names ]);
-    const pairs = getPairs(shuffleElements);
-    const rotationTime = $('#rotationTime').val();
+    const shuffledNames = _.shuffle([ ...names ]);
+    const pairs = getPairs(shuffledNames);
 
     const column = $(
       `<div class="column">
@@ -42,9 +46,9 @@ function onSubmit() {
       </div>`
     );
 
-    pairs.forEach( (pair) => {
+    pairs.forEach(pair => {
       const member1 = pair[0];
-      const member2 = pair[1] || ':(';
+      const member2 = pair[1] || ALONE;
 
       column.append($(
           `<div class="team">
@@ -63,8 +67,9 @@ function onSubmit() {
 function getNumberOfIterations() {
   const endsAt = moment($('#endsAt').val());
   const startsAt = moment($('#startsAt').val());
-  const numberOfDays = endsAt.diff(startsAt, 'days');
   const rotationTime = $('#rotationTime').val();
+
+  const numberOfDays = endsAt.diff(startsAt, 'days');
 
   return Math.ceil(numberOfDays / rotationTime);
 }
