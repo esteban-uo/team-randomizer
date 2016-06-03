@@ -44,15 +44,18 @@ function onSubmit() {
 
     const column = $(
       `<div class="column">
-        <div>${date.format('dddd')}</div>
+        <div class="day">${date.format('dddd')}</div>
       </div>`
     );
 
     pairs.forEach( (pair) => {
+      const member1 = pair[0];
+      const member2 = pair[1] || ':(';
+
       column.append($(
           `<div class="team">
-            <div>${pair[0]}</div>
-            <div>${pair[1]}</div>
+            <div>${member1}</div>
+            <div>${member2}</div>
           </div>`
         ));
     });
