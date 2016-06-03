@@ -15,13 +15,25 @@
   <style>
     #distribution {
       display: flex;
+      background: #ccc;
+      overflow-x: scroll;
+    }
+
+    .column {
+      background: tomato;
+      padding: 5px;
+      line-height: 15px;
+      color: white;
+      font-weight: bold;
+      font-size: 1em;
+      text-align: center;
     }
   </style>
-  <title>JS Bin</title>
+  <title></title>
 </head>
 <body>
   <div class="container">
-    <h1 class="text-center">Team randomnizer</h1>
+    <h1 class="text-center">Pair teams randomnizer</h1>
     <form class="form-horizontal">
       <div class="form-group">
         <label class="col-sm-2 control-label">Names</label>
@@ -53,22 +65,7 @@
         </div>
       </div>
     </form>
-    <div id="distribution">
-      <div>
-        <div>Monday</div>
-        <div class="teams">
-          <div>Juan</div>
-          <div>Raul</div>
-        </div>
-      </div>
-      <div>
-        <div>Tuesday</div>
-        <div class="teams">
-          <div>Pepe</div>
-          <div>David</div>
-        </div>
-      </div>
-    </div>
+    <div id="distribution"></div>
   </div>
 <script type="text/babel" src="randomnizer.js"></script>
 </body>

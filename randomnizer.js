@@ -25,26 +25,40 @@ function getPairs(remainingElements) {
 }
 
 function onSubmit() {
+  const $distribution = $('#distribution');
+
   const names = getNames();
   const iterations = getNumberOfIterations();
-  const startingDate = moment($('#endsAt').val());
+  const startingDate = moment($('#startsAt').val());
+
+  $distribution.empty();
 
   const pairsPerDay = [];
+
   for(var iteration = 0; iteration < iterations; ++iteration) {
     const shuffleElements = _.shuffle([ ...names ]);
     const pairs = getPairs(shuffleElements);
     const date = moment(startingDate).add(iteration, 'days');
     pairsPerDay.push({ pairs, date });
 
-    const column = $(`<div><div>${date}</div></div>`);
+    const column = $(
+      `<div class="column">
+        <div>${date.format('dddd')}</div>
+      </div>`
+    );
+
     pairs.forEach( (pair) => {
-      column.append($(`<div class="team"><div>${pair[0]}</div><div>${pair[1]}</div></div>`));
+      column.append($(
+          `<div class="team">
+            <div>${pair[0]}</div>
+            <div>${pair[1]}</div>
+          </div>`
+        ));
     });
-    $('#distribution').append(column)
+
+    $distribution.append(column);
   }
 }
-
-
 
 function getNumberOfIterations() {
   const endsAt = moment($('#endsAt').val());
