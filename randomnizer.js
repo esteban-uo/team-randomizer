@@ -1,3 +1,8 @@
+const time = moment();
+
+$('#startsAt').val(time.format('YYYY-MM-DD'));
+$('#endsAt').val(time.add(15, 'days').format('YYYY-MM-DD'));
+$('#submit').click(onSubmit);
 
 function onSubmit() {
   const names = $('#names')
@@ -8,22 +13,11 @@ function onSubmit() {
   const iterations = getNumberOfIterations();
 
   for(var iteration = 0; iteration < iterations; ++iteration) {
-    const shuffleElements = shuffleArray([ ...names ]);
+    const shuffleElements = _.suffle([ ...names ]);
     const pairs = getPairs(shuffleElements);
-    console.log('Pairs: ');
     console.table(pairs)
   }
 }
-
-// setup
-
-const time = moment();
-
-$('#startsAt').val(time.format('YYYY-MM-DD'));
-$('#endsAt').val(time.add(15, 'days').format('YYYY-MM-DD'));
-$('#submit').click(onSubmit);
-
-// Helper functions
 
 function getNumberOfIterations() {
   const endsAt = moment($('#endsAt').val());
@@ -32,16 +26,6 @@ function getNumberOfIterations() {
   const rotationTime = $('#rotationTime').val();
 
   return Math.round(numberOfDays / rotationTime);
-}
-
-function shuffleArray(array) {
-  for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-  }
-  return array;
 }
 
 function getPairs(remainingElements) {
