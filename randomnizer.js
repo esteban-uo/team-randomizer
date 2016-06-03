@@ -7,8 +7,8 @@ $('#submit').click(onSubmit);
 
 function getPairs(remainingElements) {
   const teams = [];
-
   const newRemaining = [ ...remainingElements ];
+
   while(newRemaining.length > 0) {
     const team = [];
 
@@ -16,9 +16,7 @@ function getPairs(remainingElements) {
       team.push(newRemaining.pop());
     }
 
-    if(team.length) {
-      teams.push(team);
-    }
+    if(team.length) teams.push(team);
   }
 
   return teams;
@@ -33,18 +31,17 @@ function onSubmit() {
 
   $distribution.empty();
 
-  const pairsPerDay = [];
-
   for(var iteration = 0; iteration < iterations; ++iteration) {
     const shuffleElements = _.shuffle([ ...names ]);
     const pairs = getPairs(shuffleElements);
     const rotationTime = $('#rotationTime').val();
-    const date = moment(startingDate).add(iteration * rotationTime, 'days');
-    pairsPerDay.push({ pairs, date });
+
+    const date = moment(startingDate)
+                  .add(iteration * rotationTime, 'days');
 
     const column = $(
       `<div class="column">
-        <div class="day">${date.format('dddd')}</div>
+        <div class="day">${date.format('ddd D')}</div>
       </div>`
     );
 
@@ -70,7 +67,7 @@ function getNumberOfIterations() {
   const numberOfDays = endsAt.diff(startsAt, 'days');
   const rotationTime = $('#rotationTime').val();
 
-  return Math.round(numberOfDays / rotationTime);
+  return Math.ceil(numberOfDays / rotationTime);
 }
 
 function getNames() {
