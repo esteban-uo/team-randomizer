@@ -35,8 +35,16 @@ function onSubmit() {
     const pairs = getPairs(shuffleElements);
     const date = moment(startingDate).add(iteration, 'days');
     pairsPerDay.push({ pairs, date });
+
+    const column = $(`<div><div>${date}</div></div>`);
+    pairs.forEach( (pair) => {
+      column.append($(`<div class="team"><div>${pair[0]}</div><div>${pair[1]}</div></div>`));
+    });
+    $('#distribution').append(column)
   }
 }
+
+
 
 function getNumberOfIterations() {
   const endsAt = moment($('#endsAt').val());
