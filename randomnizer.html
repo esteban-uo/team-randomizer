@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <script src="https://code.jquery.com/jquery.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+</head>
+<body>
+  <h1 class="text-center">Team randomnizer</h1>
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Names by comas</label>
+      <div class="col-sm-10">
+        <textarea id="names" name="names" class="form-control" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Sprint starts</label>
+      <div class="col-sm-10">
+        <input id="startsAt" name="startsAt" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Sprint ends</label>
+      <div class="col-sm-10">
+        <input id="endsAt" name="endsAt" class="form-control">
+       </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Rotation time</label>
+      <div class="col-sm-10">
+        <input id="rotationTime" name="rotationT¬ime" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-2">
+        <input class="btn btn-primary" id="submit" value="Go!">
+      </div>
+    </div>
+  </form>
+<script type="text/babel" src="randomnizer.js"></script>
+</body>
+</html>
