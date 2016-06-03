@@ -26,22 +26,19 @@ function onSubmit() {
   const $distribution = $('#distribution');
 
   const names = getNames();
-  const iterations = getNumberOfIterations();
-  const startingDate = moment($('#startsAt').val());
+  const endsAt = moment($('#endsAt').val());
+  let currentDate = moment($('#startsAt').val());
 
   $distribution.empty();
 
-  for(var iteration = 0; iteration < iterations; ++iteration) {
+  do {
     const shuffleElements = _.shuffle([ ...names ]);
     const pairs = getPairs(shuffleElements);
     const rotationTime = $('#rotationTime').val();
 
-    const date = moment(startingDate)
-                  .add(iteration * rotationTime, 'days');
-
     const column = $(
       `<div class="column">
-        <div class="day">${date.format('ddd D')}</div>
+        <div class="day">${currentDate.format('ddd D')}</div>
       </div>`
     );
 
@@ -58,7 +55,9 @@ function onSubmit() {
     });
 
     $distribution.append(column);
-  }
+
+    currentDate = addWeekdays(currentDate, rotationTime);
+  } while(currentDate < endsAt);
 }
 
 function getNumberOfIterations() {
@@ -75,4 +74,17 @@ function getNames() {
     .prop('value')
     .split(',')
     .map(name => name.trim());
+}
+
+function addWeekdays(initialDay, days) {
+  let date = moment(initialDay);
+
+  while (days > 0) {
+    date = date.add(1, 'days');
+    if (date.isoWeekday() !== 6 && date.isoWeekday() !== 7) {
+      days -= 1;
+    }
+  }
+
+  return date;
 }
