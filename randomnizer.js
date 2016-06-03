@@ -38,7 +38,8 @@ function onSubmit() {
   for(var iteration = 0; iteration < iterations; ++iteration) {
     const shuffleElements = _.shuffle([ ...names ]);
     const pairs = getPairs(shuffleElements);
-    const date = moment(startingDate).add(iteration, 'days');
+    const rotationTime = $('#rotationTime').val();
+    const date = moment(startingDate).add(iteration * rotationTime, 'days');
     pairsPerDay.push({ pairs, date });
 
     const column = $(
