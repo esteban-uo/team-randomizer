@@ -21,15 +21,15 @@ const time = moment();
 
 $('#startsAt').val(time.format('YYYY-MM-DD'));
 $('#endsAt').val(time.add(15, 'days').format('YYYY-MM-DD'));
-
 $('#submit').click(onSubmit);
 
 // Helper functions
 
 function getNumberOfIterations() {
-  // TODO: Use information provided by the user
-  const numberOfDays = 15;
-  const rotationTime = 2;
+  const endsAt = moment($('#endsAt').val());
+  const startsAt = moment($('#startsAt').val());
+  const numberOfDays = endsAt.diff(startsAt, 'days');
+  const rotationTime = $('#rotationTime').val();
 
   return Math.round(numberOfDays / rotationTime);
 }
