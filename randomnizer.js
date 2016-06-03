@@ -1,9 +1,19 @@
 
 function onSubmit() {
-    var names = $('#names').prop('value').split(',').map( (name) => name.trim());
+    const names = $('#names')
+                      .prop('value')
+                      .split(',')
+                      .map(name => name.trim());
 
     console.log(names);
 }
+
+// setup
+
+const time = moment();
+
+$('#startsAt').val(time.format('YYYY-MM-DD'));
+$('#endsAt').val(time.add(15, 'days').format('YYYY-MM-DD'));
 
 $('#submit').click(onSubmit);
 
