@@ -2,31 +2,8 @@ const time = moment();
 
 $('#startsAt').val(time.format('YYYY-MM-DD'));
 $('#endsAt').val(time.add(15, 'days').format('YYYY-MM-DD'));
+
 $('#submit').click(onSubmit);
-
-function onSubmit() {
-  const names = $('#names')
-                    .prop('value')
-                    .split(',')
-                    .map(name => name.trim());
-
-  const iterations = getNumberOfIterations();
-
-  for(var iteration = 0; iteration < iterations; ++iteration) {
-    const shuffleElements = _.suffle([ ...names ]);
-    const pairs = getPairs(shuffleElements);
-    console.table(pairs)
-  }
-}
-
-function getNumberOfIterations() {
-  const endsAt = moment($('#endsAt').val());
-  const startsAt = moment($('#startsAt').val());
-  const numberOfDays = endsAt.diff(startsAt, 'days');
-  const rotationTime = $('#rotationTime').val();
-
-  return Math.round(numberOfDays / rotationTime);
-}
 
 function getPairs(remainingElements) {
   const teams = [];
@@ -45,4 +22,31 @@ function getPairs(remainingElements) {
   }
 
   return teams;
+}
+
+function onSubmit() {
+  const names = getNames();
+  const iterations = getNumberOfIterations();
+
+  for(var iteration = 0; iteration < iterations; ++iteration) {
+    const shuffleElements = _.suffle([ ...names ]);
+    const pairs = getPairs(shuffleElements);
+    console.table(pairs)
+  }
+}
+
+function getNumberOfIterations() {
+  const endsAt = moment($('#endsAt').val());
+  const startsAt = moment($('#startsAt').val());
+  const numberOfDays = endsAt.diff(startsAt, 'days');
+  const rotationTime = $('#rotationTime').val();
+
+  return Math.round(numberOfDays / rotationTime);
+}
+
+function getNames() {
+  return $('#names')
+    .prop('value')
+    .split(',')
+    .map(name => name.trim());
 }
