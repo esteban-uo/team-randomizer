@@ -5,7 +5,7 @@ $('#endsAt').val(time.add(15, 'days').format('YYYY-MM-DD'));
 
 $('#submit').click(onSubmit);
 
-function getPairs(remainingElements, date) {
+function getPairs(remainingElements) {
   const teams = [];
 
   const newRemaining = [ ...remainingElements ];
@@ -17,7 +17,7 @@ function getPairs(remainingElements, date) {
     }
 
     if(team.length) {
-      teams.push({ date, team });
+      teams.push(team);
     }
   }
 
@@ -27,12 +27,14 @@ function getPairs(remainingElements, date) {
 function onSubmit() {
   const names = getNames();
   const iterations = getNumberOfIterations();
-
   const startingDate = moment($('#endsAt').val());
+
+  const pairsPerDay = [];
   for(var iteration = 0; iteration < iterations; ++iteration) {
     const shuffleElements = _.shuffle([ ...names ]);
-    const pairs = getPairs(shuffleElements, moment(startingDate).add(iteration, 'days'));
-    console.table(pairs)
+    const pairs = getPairs(shuffleElements);
+    const date = moment(startingDate).add(iteration, 'days');
+    pairsPerDay.push({ pairs, date });
   }
 }
 
