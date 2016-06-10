@@ -30,38 +30,42 @@ function onSubmit() {
   const $distribution = $('#distribution');
 
   const names = getNames();
-  const endsAt = moment($('#endsAt').val());
-  const rotationTime = $('#rotationTime').val();
-  let currentDate = moment($('#startsAt').val());
+  if(names.length > 2) {
+    const endsAt = moment($('#endsAt').val());
+    const rotationTime = $('#rotationTime').val();
+    let currentDate = moment($('#startsAt').val());
 
-  $distribution.empty();
+    $distribution.empty();
 
-  do {
-    const shuffledNames = _.shuffle([ ...names ]);
-    const pairs = getPairs(shuffledNames);
+    do {
+      const shuffledNames = _.shuffle([ ...names ]);
+      const pairs = getPairs(shuffledNames);
 
-    const column = $(
-      `<div class="column">
+      const column = $(
+        `<div class="column">
         <div class="day">${currentDate.format('ddd D')}</div>
       </div>`
-    );
+      );
 
-    pairs.forEach(pair => {
-      const member1 = pair[0];
-      const member2 = pair[1] || ALONE;
+      pairs.forEach(pair => {
+        const member1 = pair[0];
+        const member2 = pair[1] || ALONE;
 
-      column.append($(
+        column.append($(
           `<div class="team">
             <div>${member1}</div>
             <div>${member2}</div>
           </div>`
         ));
-    });
+      });
 
-    $distribution.append(column);
+      $distribution.append(column);
 
-    currentDate = addWeekdays(currentDate, rotationTime);
-  } while(currentDate < endsAt);
+      currentDate = addWeekdays(currentDate, rotationTime);
+    } while(currentDate < endsAt);
+  } else {
+    alert('Required more members to start process');
+  }
 }
 
 function getNumberOfIterations() {
@@ -78,7 +82,8 @@ function getNames() {
   return $('#names')
     .prop('value')
     .split(',')
-    .map(name => name.trim());
+    .map(name => name.trim())
+    .filter(name => name.length);
 }
 
 function addWeekdays(initialDay, days) {
