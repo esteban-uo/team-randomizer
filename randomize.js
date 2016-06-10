@@ -27,42 +27,44 @@ function getPairs(remainingElements) {
 }
 
 function onSubmit() {
-  const $distribution = $('#distribution');
-
   const names = getNames();
   if(names.length > 2) {
-    const endsAt = moment($('#endsAt').val());
-    const rotationTime = $('#rotationTime').val();
     let currentDate = moment($('#startsAt').val());
+    if(isWeekday(currentDate)) {
+      const endsAt = moment($('#endsAt').val());
+      const rotationTime = $('#rotationTime').val();
+      const $distribution = $('#distribution');
+      $distribution.empty();
 
-    $distribution.empty();
+      do {
+        const shuffledNames = _.shuffle([ ...names ]);
+        const pairs = getPairs(shuffledNames);
 
-    do {
-      const shuffledNames = _.shuffle([ ...names ]);
-      const pairs = getPairs(shuffledNames);
+        const column = $(
+          `<div class="column">
+             <div class="day">${currentDate.format('ddd D')}</div>
+           </div>`
+        );
 
-      const column = $(
-        `<div class="column">
-        <div class="day">${currentDate.format('ddd D')}</div>
-      </div>`
-      );
+        pairs.forEach(pair => {
+          const member1 = pair[0];
+          const member2 = pair[1] || ALONE;
 
-      pairs.forEach(pair => {
-        const member1 = pair[0];
-        const member2 = pair[1] || ALONE;
+          column.append($(
+            `<div class="team">
+               <div>${member1}</div>
+               <div>${member2}</div>
+             </div>`
+          ));
+        });
 
-        column.append($(
-          `<div class="team">
-            <div>${member1}</div>
-            <div>${member2}</div>
-          </div>`
-        ));
-      });
+        $distribution.append(column);
 
-      $distribution.append(column);
-
-      currentDate = addWeekdays(currentDate, rotationTime);
-    } while(currentDate < endsAt);
+        currentDate = addWeekdays(currentDate, rotationTime);
+      } while(currentDate < endsAt);
+    } else {
+      alert('The system should start in a weekday');
+    }
   } else {
     alert('Required more members to start process');
   }
@@ -91,10 +93,14 @@ function addWeekdays(initialDay, days) {
 
   while (days > 0) {
     date = date.add(1, 'days');
-    if (date.isoWeekday() !== 6 && date.isoWeekday() !== 7) {
+    if (isWeekday(date)) {
       days -= 1;
     }
   }
 
   return date;
+}
+
+function isWeekday(date) {
+  return date.isoWeekday() !== 6 && date.isoWeekday() !== 7;
 }
